@@ -35,13 +35,15 @@ int main()
     // randomowo generowane ktore wierzcholki sie lacza
     for (i = 0; i < edge; i++)
     {
-        v1 = rand() % node;
-        v2 = rand() % node;
+        do {
+            v1 = rand() % node;
+            v2 = rand() % node;
+        } while (v1 == v2 || A[v1][v2] == 1);  // Avoid self-loops and duplicate edges
         A[v1][v2] = 1;
+        A[v2][v1] = 1;
     }
     cout << endl;
 
-    /*
     // wypisywanie macierzy czytelnie
     cout << "\n    ";
     for (i = 0; i < node; i++) {
@@ -63,7 +65,6 @@ int main()
         }
         cout << endl;
     }
-    */
 
     vector<int> color(node, -1);
     vector<bool> available(node, true);
