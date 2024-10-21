@@ -8,8 +8,7 @@ using namespace std;
 
 int main()
 {
-    ifstream file;
-    file.open("data.txt");
+    ifstream file("data.txt");
     int node, edge, i, j, v1, v2;
     char **A;
     srand(time(NULL));
@@ -38,10 +37,8 @@ int main()
         }
     }
 
-    // randomowo generowane ktore wierzcholki sie lacza
-
-    for (i = 0; i < node; i++)
-    {
+    for(int i = 0; i < node; i++)
+    {   
         do {
             file >> v1;
             file >> v2;
