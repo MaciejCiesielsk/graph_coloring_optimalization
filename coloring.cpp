@@ -2,20 +2,25 @@
 #include <iomanip>
 #include <cstdlib>
 #include <vector>
+#include <fstream>
 
 using namespace std;
 
 int main()
 {
+    ifstream file("data.txt");
     int node, edge, i, j, v1, v2;
     char **A;
     srand(time(NULL));
     // wczytywanie liczby wierzcholkow i krawedz - potem bedzie to generowane z pliku jakiegos
-    cout << "Enter  number of nodes: ";
+    /*
+     cout << "Enter  number of nodes: ";
     cin >> node;
     cout << endl
          << "Enter number of egdes: ";
     cin >> edge;
+    */
+    file >> node;
 
     A = new char *[node]; // tablica wskaznikow tworzona
     for (i = 0; i < node; i++)
@@ -32,16 +37,18 @@ int main()
         }
     }
 
-    // randomowo generowane ktore wierzcholki sie lacza
-    for (i = 0; i < edge; i++)
-    {
-        v1 = rand() % node;
-        v2 = rand() % node;
-        A[v1][v2] = 1;
+        while (file >> v1 >> v2)
+    {   
+        // Ensure no self-loops or duplicate edges
+        if (v1 != v2 && A[v1][v2] == 0 && v1 >= 0 && v1 < node && v2 >= 0 && v2 < node)
+        {
+            A[v1][v2] = 1;
+            A[v2][v1] = 1;
+        }
     }
-    cout << endl;
 
-    /*
+    file.close();
+
     // wypisywanie macierzy czytelnie
     cout << "\n    ";
     for (i = 0; i < node; i++) {
@@ -63,7 +70,6 @@ int main()
         }
         cout << endl;
     }
-    */
 
     vector<int> color(node, -1);
     vector<bool> available(node, true);
