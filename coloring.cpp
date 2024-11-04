@@ -3,12 +3,13 @@
 #include <cstdlib>
 #include <vector>
 #include <fstream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
 int main()
 {
-    ifstream file("data-big.txt");
+    ifstream file("data-small.txt");
     int node, edge, i, j, v1, v2;
     char **A;
     srand(time(NULL));
@@ -100,8 +101,10 @@ int main()
     cout << "\nNode Colors:\n";
     for (i = 0; i < node; i++)
     {
-        cout << "Node " << i << " -> Color " << color[i] << endl;
+        cout << "Node " << i << " -> Color " << color[i]+1 << endl;
     }
+    int maxColor = *max_element(color.begin(), color.end());
+    cout << "\nHighest Color Number: " << maxColor+1 << endl;
 
     // zwolnienie pamieci
     for (i = 0; i < node; i++)
