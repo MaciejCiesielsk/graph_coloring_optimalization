@@ -8,7 +8,7 @@ using namespace std;
 
 int main()
 {
-    ifstream file("graph.txt");
+    ifstream file("data-big.txt");
     int node, edge, i, j, v1, v2;
     char **A;
     srand(time(NULL));
