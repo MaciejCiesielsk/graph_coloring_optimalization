@@ -4,7 +4,7 @@
 #include <ctime>
 
 int main() {
-    int numNodes = 100;        // Number of nodes
+    int numNodes = 20;        // Number of nodes
     double saturation = 0.5;  // 50% saturation
 
 
