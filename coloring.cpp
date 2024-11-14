@@ -113,7 +113,5 @@ int main()
     }
     delete[] A;
 
-    // kolorowanie grafu
-
     return 0;
 }
