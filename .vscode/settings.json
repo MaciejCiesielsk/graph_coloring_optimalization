@@ -48,5 +48,7 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "typeinfo": "cpp"
+        "ostream": "cpp",
+        "iostream": "cpp"
     }
 }
