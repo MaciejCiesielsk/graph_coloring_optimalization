@@ -50,7 +50,7 @@ int main() {
 
     // Initial random coloring
     vector<int> color(nodes);
-    int k = 4; // Number of colors (change as needed)
+    int k = 13; // Number of colors (change as needed)
     srand(time(0));
     for (int i = 0; i < nodes; i++) {
         color[i] = rand() % k;
@@ -118,6 +118,16 @@ int main() {
     for (int i = 0; i < nodes; i++) {
         cout << "Node " << i + 1 << " -> Color " << bestColor[i] + 1 << endl;
     }
+
+    int used = 0;
+
+    for (int i = 0; i < nodes; i++) {
+        if (used < bestColor[i] + 1){
+            used = bestColor[i] + 1;
+        }
+    }
+
+    std::cout << "Colors used: " << used << std::endl;
 
     //cout << "Conflicts: " << bestConflicts << endl;
     //cout << "Iterations: " << iterations << endl;

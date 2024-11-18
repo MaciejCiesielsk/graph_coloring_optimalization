@@ -9,7 +9,7 @@ using namespace std;
 
 int main()
 {
-    ifstream file("queen6.txt");
+    ifstream file("gc500.txt");
     int node, edge, i, j, v1, v2;
     char **A;
     srand(time(NULL));
