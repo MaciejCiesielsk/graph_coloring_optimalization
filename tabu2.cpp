@@ -10,8 +10,8 @@
 using namespace std;
 
 vector<int> greedy(){
-    vector<int> solution;
-    ifstream file("queen6.txt");
+    vector<int> solution; 
+    ifstream file("gc500.txt");
     int node, v1, v2;
     srand(time(NULL));
     file >> node;
@@ -59,22 +59,24 @@ vector<int> greedy(){
 }
 
 int objective_function(const vector<int>& solution){
-    return accumulate(solution.begin(), solution.end(), 0);
+    return *max_element(solution.begin(), solution.end());
 }
 
 vector<vector<int>> get_neighbors(const vector<int>& solution){
     vector<vector<int>> neighbors;
     for(size_t i = 0; i < solution.size(); i++){
-        for(size_t j = i + 1; j < solution.size(); j++){
-            vector<int> neighbor = solution;
-            swap(neighbor[i], neighbor[j]);
-            neighbors.push_back(neighbor);
+        for(int color = 0; color < *max_element(solution.begin(), solution.end()) + 2; color++){
+            if(solution[i] != color){
+                vector<int> neighbor = solution;
+                neighbor[i] = color;
+                neighbors.push_back(neighbor);
+            }
         }
     }
     return neighbors;
 }
 
-vector<int> tabu_search(const vector<int>& initial_solution,int max_iterations, int tabu_list_size){
+vector<int> tabu_search(const vector<int>& initial_solution, int max_iterations, int tabu_list_size){
     vector<int> best_solution = initial_solution;
     vector<int> current_solution = initial_solution;
     vector<vector<int>> tabu_list;
@@ -99,13 +101,13 @@ vector<int> tabu_search(const vector<int>& initial_solution,int max_iterations, 
         }
 
         current_solution = best_neighbor;
-        tabu_list.push_back(best_neighbor);
+        tabu_list.push_back(current_solution); 
         if(tabu_list.size() > tabu_list_size){
             tabu_list.erase(tabu_list.begin());
         }
 
-        if(objective_function(best_neighbor) < objective_function(best_solution)){
-            best_solution = best_neighbor;
+        if(objective_function(current_solution) < objective_function(best_solution)){
+            best_solution = current_solution;
         }
     }
     return best_solution;
@@ -114,8 +116,8 @@ vector<int> tabu_search(const vector<int>& initial_solution,int max_iterations, 
 
 int main(){
     vector<int> initial_solution = greedy();
-    int max_iterations = 200;
-    int tabu_list_size = 50;
+    int max_iterations = 300;
+    int tabu_list_size = 100;
 
     vector<int> best_solution = tabu_search(initial_solution, max_iterations, tabu_list_size);
     cout<< "Best solution: ";
@@ -123,7 +125,6 @@ int main(){
         cout << val << " ";
     }
     cout<<endl;
-
     cout<< "Highest Color Number: " << *max_element(best_solution.begin(), best_solution.end()) + 1 << endl;
     return 0;
 }
