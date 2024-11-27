@@ -36,19 +36,20 @@ int main() {
     int nodes, maxIterations = 1000, tabuTenure = 7;
     file >> nodes;
 
-    // Initialize adjacency list
+    // tworzenie wektora dwuwymiarowego z listą sąsiedztwa
     vector<vector<int>> adjList(nodes);
 
     int v1, v2;
+    // dodawanie do wektora polaczen w grafie
     while (file >> v1 >> v2) {
-        adjList[v1 - 1].push_back(v2 - 1); // Adjusting to 0-based indexing
-        adjList[v2 - 1].push_back(v1 - 1); // Bidirectional edge
+        adjList[v1 - 1].push_back(v2 - 1);
+        adjList[v2 - 1].push_back(v1 - 1); 
     }
     file.close();
 
     cout << "Graph Loaded with " << nodes << " nodes.\n";
 
-    // Initial random coloring
+    // tworzenie wektora kolorów
     vector<int> color(nodes);
     int k = 13; // Number of colors (change as needed)
     srand(time(0));
