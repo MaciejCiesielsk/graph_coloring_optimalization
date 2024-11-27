@@ -1,0 +1,127 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <algorithm>
+#include <limits>
+
+using namespace std;
+
+vector<int> greedy(const vector<int>& solution){
+    vector<int> solution;
+    ifstream file("data-small.txt");
+    int node, v1, v2;
+    srand(time(NULL));
+    file >> node;
+
+    vector<vector<int>> adj_matrix(node, vector<int>(node, 0));
+
+    while (file >> v1 >> v2)
+    {
+        if (v1 != v2 && v1 >= 0 && v1 < node && v2 >= 0 && v2 < node && adj_matrix[v1][v2] == 0)
+        {
+            adj_matrix[v1][v2] = 1;
+            adj_matrix[v2][v1] = 1;
+        }
+    }
+    file.close();
+
+    vector<int> color(node, -1);
+    vector<bool> available(node, true);
+
+    color[0] = 0;
+
+    for (int i = 1; i < node; i++)
+    {
+        for (int j = 0; j < node; j++)
+        {
+            if (adj_matrix[i][j] == 1 && color[j] != -1)
+            {
+                available[color[j]] = false;
+            }
+        }
+
+        int c;
+        for (c = 0; c < node; c++)
+        {
+            if (available[c])
+                break;
+        }
+        color[i] = c;
+        solution.push_back(color[i]);
+
+        fill(available.begin(), available.end(), true);
+    }
+
+    return solution;
+}
+
+
+vector<vector<int>> get_neighbors(const vector<int>& solution){
+    vector<vector<int>> neighbors;
+    for(int i = 0; i < solution.size(); i++){
+        for(int j = i + 1; j < solution.size(); j++){
+            vector<int> neighbor = solution;
+            swap(neighbor[i], neighbor[j]);
+            neighbors.push_back(neighbor);
+        }
+    }
+    return neighbors;
+}
+
+vector<int> tabu_search(const vector<int>& initial_solution,int max_iterations, int tabu_list_size){
+    vector<int> best_solution = initial_solution;
+    vector<int> current_solution = initial_solution;
+    vector<vector<int>> tabu_list;
+
+    for(int i = 0; i < max_iterations; i++){
+        vector<vector<int>> neighbors = get_neighbors(current_solution);
+        vector<int> best_neighbor;
+        int best_neighbor_fitness = numeric_limits<int>::max();
+
+        for(const vector<int>& neighbor : neighbors){
+            if(find(tabu_list.begin(), tabu_list.end(), neighbor) == tabu_list.end()){
+                int neighbor_fitness = greedy(neighbor);
+                if(neighbor_fitness < best_neighbor_fitness){
+                    best_neighbor = neighbor;
+                    best_neighbor_fitness = neighbor_fitness;
+                }
+            }
+        }
+
+        if(best_neighbor.empty()){
+            break;
+        }
+
+        current_solution = best_neighbor;
+        tabu_list.push_back(best_neighbor);
+        if(tabu_list.size() > tabu_list_size){
+            tabu_list.erase(tabu_list.begin());
+        }
+
+        if(greedy(best_neighbor) < greedy(best_solution)){
+            best_solution = best_neighbor;
+        }
+    }
+    return best_solution
+}
+
+
+int main(){
+    vector<int> initial_solution = greedy();
+    int max_iterations = 100;
+    int tabu_list_size = 10;
+    for(int i = 0; i < initial_solution.size(); i++){
+        cout << initial_solution[i] << " ";
+    }
+    cout << "\n";
+
+    vector<int> best_solution = tabu_search(initial_solution, max_iterations, tabu_list_size);
+    cout<< "Best solution: ";
+    for(int val : best_solution){
+        cout << val << " ";
+    }
+    cout<<endl;
+
+    cout<< "Highest Color Number: " << *max_element(best_solution.begin(), best_solution.end()) + 1 << endl;
+    return 0;
+}

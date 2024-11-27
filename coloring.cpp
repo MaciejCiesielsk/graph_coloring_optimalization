@@ -9,7 +9,8 @@ using namespace std;
 
 int main()
 {
-    ifstream file("gc500.txt");
+    ifstream file("data-big.txt");
+    vector<int> solution;
     int node, edge, i, j, v1, v2;
     char **A;
     srand(time(NULL));
@@ -98,6 +99,8 @@ int main()
                 break;
         }
         color[i] = c;
+        solution.push_back(c);
+
 
         fill(available.begin(), available.end(), true);
     }
@@ -108,8 +111,11 @@ int main()
         cout << "Node " << i << " -> Color " << color[i]+1 << endl;
     }
     int maxColor = *max_element(color.begin(), color.end());
-    cout << "\nHighest Color Number: " << maxColor+1 << endl;
+    //cout << "\nHighest Color Number: " << maxColor+1 << endl;
 
+    for(int x = 0; x<solution.size(); x++){
+        cout << solution[x] << " ";
+    }
     // zwolnienie pamieci
     for (i = 0; i < node; i++)
     {
