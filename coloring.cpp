@@ -9,7 +9,7 @@ using namespace std;
 
 int main()
 {
-    ifstream file("data-big.txt");
+    ifstream file("gc500.txt");
     vector<int> solution;
     int node, edge, i, j, v1, v2;
     char **A;
@@ -111,7 +111,7 @@ int main()
         cout << "Node " << i << " -> Color " << color[i]+1 << endl;
     }
     int maxColor = *max_element(color.begin(), color.end());
-    //cout << "\nHighest Color Number: " << maxColor+1 << endl;
+    cout << "\nHighest Color Number: " << maxColor+1 << endl;
 
     for(int x = 0; x<solution.size(); x++){
         cout << solution[x] << " ";

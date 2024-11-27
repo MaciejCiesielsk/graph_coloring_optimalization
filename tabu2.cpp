@@ -3,12 +3,14 @@
 #include <fstream>
 #include <algorithm>
 #include <limits>
+#include <numeric>
+
 
 using namespace std;
 
-vector<int> greedy(const vector<int>& solution){
+vector<int> greedy(){
     vector<int> solution;
-    ifstream file("data-small.txt");
+    ifstream file("gc500.txt");
     int node, v1, v2;
     srand(time(NULL));
     file >> node;
@@ -55,6 +57,9 @@ vector<int> greedy(const vector<int>& solution){
     return solution;
 }
 
+int obiective_function(const vector<int>& solution){
+    return accumulate(solution.begin(), solution.end(), 0);
+}
 
 vector<vector<int>> get_neighbors(const vector<int>& solution){
     vector<vector<int>> neighbors;
@@ -80,7 +85,7 @@ vector<int> tabu_search(const vector<int>& initial_solution,int max_iterations, 
 
         for(const vector<int>& neighbor : neighbors){
             if(find(tabu_list.begin(), tabu_list.end(), neighbor) == tabu_list.end()){
-                int neighbor_fitness = greedy(neighbor);
+                int neighbor_fitness = obiective_function(neighbor);
                 if(neighbor_fitness < best_neighbor_fitness){
                     best_neighbor = neighbor;
                     best_neighbor_fitness = neighbor_fitness;
@@ -98,11 +103,11 @@ vector<int> tabu_search(const vector<int>& initial_solution,int max_iterations, 
             tabu_list.erase(tabu_list.begin());
         }
 
-        if(greedy(best_neighbor) < greedy(best_solution)){
+        if(obiective_function(best_neighbor) < obiective_function(best_solution)){
             best_solution = best_neighbor;
         }
     }
-    return best_solution
+    return best_solution;
 }
 
 
