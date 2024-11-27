@@ -4,13 +4,14 @@
 #include <algorithm>
 #include <limits>
 #include <numeric>
+#include <chrono>
 
 
 using namespace std;
 
 vector<int> greedy(){
     vector<int> solution;
-    ifstream file("gc500.txt");
+    ifstream file("queen6.txt");
     int node, v1, v2;
     srand(time(NULL));
     file >> node;
@@ -57,14 +58,14 @@ vector<int> greedy(){
     return solution;
 }
 
-int obiective_function(const vector<int>& solution){
+int objective_function(const vector<int>& solution){
     return accumulate(solution.begin(), solution.end(), 0);
 }
 
 vector<vector<int>> get_neighbors(const vector<int>& solution){
     vector<vector<int>> neighbors;
-    for(int i = 0; i < solution.size(); i++){
-        for(int j = i + 1; j < solution.size(); j++){
+    for(size_t i = 0; i < solution.size(); i++){
+        for(size_t j = i + 1; j < solution.size(); j++){
             vector<int> neighbor = solution;
             swap(neighbor[i], neighbor[j]);
             neighbors.push_back(neighbor);
@@ -85,7 +86,7 @@ vector<int> tabu_search(const vector<int>& initial_solution,int max_iterations, 
 
         for(const vector<int>& neighbor : neighbors){
             if(find(tabu_list.begin(), tabu_list.end(), neighbor) == tabu_list.end()){
-                int neighbor_fitness = obiective_function(neighbor);
+                int neighbor_fitness = objective_function(neighbor);
                 if(neighbor_fitness < best_neighbor_fitness){
                     best_neighbor = neighbor;
                     best_neighbor_fitness = neighbor_fitness;
@@ -103,7 +104,7 @@ vector<int> tabu_search(const vector<int>& initial_solution,int max_iterations, 
             tabu_list.erase(tabu_list.begin());
         }
 
-        if(obiective_function(best_neighbor) < obiective_function(best_solution)){
+        if(objective_function(best_neighbor) < objective_function(best_solution)){
             best_solution = best_neighbor;
         }
     }
@@ -113,12 +114,8 @@ vector<int> tabu_search(const vector<int>& initial_solution,int max_iterations, 
 
 int main(){
     vector<int> initial_solution = greedy();
-    int max_iterations = 100;
-    int tabu_list_size = 10;
-    for(int i = 0; i < initial_solution.size(); i++){
-        cout << initial_solution[i] << " ";
-    }
-    cout << "\n";
+    int max_iterations = 200;
+    int tabu_list_size = 50;
 
     vector<int> best_solution = tabu_search(initial_solution, max_iterations, tabu_list_size);
     cout<< "Best solution: ";

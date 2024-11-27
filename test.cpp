@@ -1,6 +1,6 @@
 #include <algorithm>
 #include <iostream>
-#include <numeric>
+#include <numeric> // Added to include accumulate
 #include <vector>
 
 // Define the objective function

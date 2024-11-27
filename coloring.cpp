@@ -9,7 +9,7 @@ using namespace std;
 
 int main()
 {
-    ifstream file("gc500.txt");
+    ifstream file("queen6.txt");
     vector<int> solution;
     int node, edge, i, j, v1, v2;
     char **A;
