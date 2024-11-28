@@ -6,7 +6,6 @@
 #include <numeric>
 #include <chrono>
 
-
 using namespace std;
 
 vector<int> greedy(){
@@ -54,19 +53,27 @@ vector<int> greedy(){
 
         fill(available.begin(), available.end(), true);
     }
+    solution.shrink_to_fit();
 
     return solution;
 }
 
 int objective_function(const vector<int>& solution){
-    return *max_element(solution.begin(), solution.end());
+    return *max_element(solution.begin(), solution.end()) + 1;
 }
 
-vector<vector<int>> get_neighbors(const vector<int>& solution){
+vector<vector<int>> get_neighbors(const vector<int>& solution, const vector<vector<int>>& adj_matrix){
     vector<vector<int>> neighbors;
     for(size_t i = 0; i < solution.size(); i++){
         for(int color = 0; color < *max_element(solution.begin(), solution.end()) + 2; color++){
-            if(solution[i] != color){
+            bool can_color = true;
+            for(size_t j = 0; j < solution.size(); j++){
+                if(adj_matrix[i][j] == 1 && solution[j] == color){
+                    can_color = false;
+                    break;
+                }
+            }
+            if(can_color && solution[i] != color){
                 vector<int> neighbor = solution;
                 neighbor[i] = color;
                 neighbors.push_back(neighbor);
@@ -76,19 +83,21 @@ vector<vector<int>> get_neighbors(const vector<int>& solution){
     return neighbors;
 }
 
-vector<int> tabu_search(const vector<int>& initial_solution, int max_iterations, int tabu_list_size){
+vector<int> tabu_search(const vector<int>& initial_solution, const vector<vector<int>>& adj_matrix, int max_iterations, int tabu_list_size){
     vector<int> best_solution = initial_solution;
     vector<int> current_solution = initial_solution;
     vector<vector<int>> tabu_list;
 
+    srand(time(NULL)); 
+
     for(int i = 0; i < max_iterations; i++){
-        vector<vector<int>> neighbors = get_neighbors(current_solution);
+        vector<vector<int>> neighbors = get_neighbors(current_solution, adj_matrix);
         vector<int> best_neighbor;
         int best_neighbor_fitness = numeric_limits<int>::max();
 
-        for(const vector<int>& neighbor : neighbors){
-            if(find(tabu_list.begin(), tabu_list.end(), neighbor) == tabu_list.end()){
-                int neighbor_fitness = objective_function(neighbor);
+        for(const auto& neighbor : neighbors){
+            int neighbor_fitness = objective_function(neighbor);
+            if(find(tabu_list.begin(), tabu_list.end(), neighbor) == tabu_list.end() || neighbor_fitness < objective_function(best_solution)){
                 if(neighbor_fitness < best_neighbor_fitness){
                     best_neighbor = neighbor;
                     best_neighbor_fitness = neighbor_fitness;
@@ -113,13 +122,27 @@ vector<int> tabu_search(const vector<int>& initial_solution, int max_iterations,
     return best_solution;
 }
 
-
 int main(){
     vector<int> initial_solution = greedy();
-    int max_iterations = 300;
-    int tabu_list_size = 100;
+    int max_iterations = 1000;
+    int tabu_list_size = 200;
 
-    vector<int> best_solution = tabu_search(initial_solution, max_iterations, tabu_list_size);
+    ifstream file("gc500.txt");
+    int node, v1, v2;
+    file >> node;
+
+    vector<vector<int>> adj_matrix(node, vector<int>(node, 0));
+
+    while (file >> v1 >> v2)
+    {
+        if (v1 != v2 && v1 >= 0 && v1 < node && v2 >= 0 && v2 < node && adj_matrix[v1][v2] == 0)
+        {
+            adj_matrix[v1][v2] = 1;
+            adj_matrix[v2][v1] = 1;
+        }
+    }
+    file.close();
+    vector<int> best_solution = tabu_search(initial_solution, adj_matrix, max_iterations, tabu_list_size);
     cout<< "Best solution: ";
     for(int val : best_solution){
         cout << val << " ";
