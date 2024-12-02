@@ -8,3 +8,11 @@ TODO:
 
   Tak jak greedy alhorithm, tylko ze bierzemy randomowe i & j i sprawdzamy czy w tej samej kolumnie sa sasiadami - jezeli tak to zabronione. Generujemy kolejna iteracje z randomowymi i jezeli jest wartosc =< to wpierdalamy do Tabu listy. Potem dostrajanie.
  Mozna sprawdzac sasiadow nie wszystkich. Np kilku tylko, bo potem mozemy ich dropnac.
+
+
+
+ najlepsze solucje:
+ - gc500 - 70/1000 - sprawdzić czy dla mniejszych działa
+ - queen6 - 9 daje idk lol
+ - gc1000 - 100/1000 daje 153, 100/2000 też niestety
+ - miles250 - 10/300

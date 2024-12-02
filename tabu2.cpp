@@ -10,7 +10,7 @@ using namespace std;
 
 vector<int> greedy(){
     vector<int> solution; 
-    ifstream file("gc500.txt");
+    ifstream file("gc1000.txt");
     int node, v1, v2;
     srand(time(NULL));
     file >> node;
@@ -59,7 +59,7 @@ vector<int> greedy(){
 }
 
 int objective_function(const vector<int>& solution){
-    return *max_element(solution.begin(), solution.end()) + 1;
+    return accumulate(solution.begin(), solution.end(), 0);
 }
 
 vector<vector<int>> get_neighbors(const vector<int>& solution, const vector<vector<int>>& adj_matrix){
@@ -124,10 +124,10 @@ vector<int> tabu_search(const vector<int>& initial_solution, const vector<vector
 
 int main(){
     vector<int> initial_solution = greedy();
-    int max_iterations = 1000;
-    int tabu_list_size = 200;
+    int max_iterations = 100;
+    int tabu_list_size = 2000;
 
-    ifstream file("gc500.txt");
+    ifstream file("gc1000.txt");
     int node, v1, v2;
     file >> node;
 
@@ -145,7 +145,7 @@ int main(){
     vector<int> best_solution = tabu_search(initial_solution, adj_matrix, max_iterations, tabu_list_size);
     cout<< "Best solution: ";
     for(int val : best_solution){
-        cout << val << " ";
+        cout << val + 1 << " ";
     }
     cout<<endl;
     cout<< "Highest Color Number: " << *max_element(best_solution.begin(), best_solution.end()) + 1 << endl;
