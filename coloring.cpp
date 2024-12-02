@@ -9,7 +9,8 @@ using namespace std;
 
 int main()
 {
-    ifstream file("data-small.txt");
+    ifstream file("queen6.txt");
+    vector<int> solution;
     int node, edge, i, j, v1, v2;
     char **A;
     srand(time(NULL));
@@ -41,11 +42,15 @@ int main()
         while (file >> v1 >> v2)
     {   
         // Ensure no self-loops or duplicate edges
-        if (v1 != v2 && A[v1][v2] == 0 && v1 >= 0 && v1 < node && v2 >= 0 && v2 < node)
+        /*if (v1 != v2 && A[v1][v2] == 0 && v1 >= 0 && v1 < node && v2 >= 0 && v2 < node)
         {
             A[v1][v2] = 1;
             A[v2][v1] = 1;
-        }
+        }*/
+        if (v1 != v2 && v1 >= 0 && v1 < node && v2 >= 0 && v2 < node && A[v1][v2] == 0) {
+        A[v1][v2] = 1;
+        A[v2][v1] = 1;
+    }
     }
 
     file.close();
@@ -94,6 +99,8 @@ int main()
                 break;
         }
         color[i] = c;
+        solution.push_back(c);
+
 
         fill(available.begin(), available.end(), true);
     }
@@ -106,6 +113,9 @@ int main()
     int maxColor = *max_element(color.begin(), color.end());
     cout << "\nHighest Color Number: " << maxColor+1 << endl;
 
+    for(int x = 0; x<solution.size(); x++){
+        cout << solution[x] << " ";
+    }
     // zwolnienie pamieci
     for (i = 0; i < node; i++)
     {
