@@ -10,7 +10,7 @@ using namespace std;
 
 vector<int> greedy(){
     vector<int> solution; 
-    ifstream file("gc1000.txt");
+    ifstream file("le450_5a.txt");
     int node, v1, v2;
     srand(time(NULL));
     file >> node;
@@ -124,10 +124,10 @@ vector<int> tabu_search(const vector<int>& initial_solution, const vector<vector
 
 int main(){
     vector<int> initial_solution = greedy();
-    int max_iterations = 100;
-    int tabu_list_size = 2000;
+    int max_iterations = 300;
+    int tabu_list_size = 900;
 
-    ifstream file("gc1000.txt");
+    ifstream file("le450_5a.txt");
     int node, v1, v2;
     file >> node;
 

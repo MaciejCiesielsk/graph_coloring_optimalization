@@ -12,11 +12,18 @@ TODO:
 
 
  najlepsze solucje:
- - gc500 - 70/1000 - sprawdzić czy dla mniejszych działa
- - queen6 - 9 daje idk lol
- - gc1000 - 100/1000 daje 153, 100/2000 też niestety
- - miles250 - 10/300
+ - gc500 - 70/1000 - sprawdzić czy dla mniejszych działa, dla 100/1000 dalo 82
+ - queen6 - 9 daje idk lol - nie wazne jakie dane, idk idk man
+ - gc1000 - 100/1000 daje 153, 100/2000 też niestety, 200/1000 dalo 146, ale po bardzo dlugim czasie, przy limicie 3 minut daje 152 dla 1000/2000
+ - miles250 - 2/250 daje 8 czyli G, dla tego 1000/2000 sie wywala, daje jakies 6, dodac +2 lol
 
+
+wyniki:
+- queen6 - 9
+- miles250 - daje 6 nw czemu, daje 8 dla malych warunkow np 2/250
+- gc500 - 82
+- gc1000 - 152
+- le450_5a - 11
 
 
  SPRAWOZDANIE:
