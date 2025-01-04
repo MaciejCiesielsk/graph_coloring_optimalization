@@ -1,9 +1,5 @@
 TODO:
- - gotowy szkielet projektu ktory dziala jako tako
- - metaheurystyka TABU
- - sortowanie numerkow w generatorze
  - naprawić kod tabu.cpp - na pewno nie jest optymalny
- - warunek stopu - max 3 min na instancje
  - zaliczenie 20 bądź 27 stycznia - da nam znac ziutek, ale raczej 27 o 11:45, przed standradowa sala
 
   Tak jak greedy alhorithm, tylko ze bierzemy randomowe i & j i sprawdzamy czy w tej samej kolumnie sa sasiadami - jezeli tak to zabronione. Generujemy kolejna iteracje z randomowymi i jezeli jest wartosc =< to wpierdalamy do Tabu listy. Potem dostrajanie.

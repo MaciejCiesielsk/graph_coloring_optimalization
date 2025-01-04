@@ -10,7 +10,7 @@ using namespace std;
 
 vector<int> greedy() {
     vector<int> solution;
-    ifstream file("le450_5a.txt");
+    ifstream file("data-small.txt");
     int node, v1, v2;
     srand(time(NULL));
     file >> node;
@@ -128,10 +128,10 @@ int main() {
     chrono::minutes timeout(3); // Set timeout to 3 minutes
 
     vector<int> initial_solution = greedy();
-    int max_iterations = 1000;
-    int tabu_list_size = 2000;
+    int max_iterations = 10;
+    int tabu_list_size = 40;
 
-    ifstream file("le450_5a.txt");
+    ifstream file("data-small.txt");
     int node, v1, v2;
     file >> node;
 

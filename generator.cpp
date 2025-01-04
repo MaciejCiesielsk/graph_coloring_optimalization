@@ -2,11 +2,12 @@
 #include <fstream>
 #include <cstdlib>
 #include <ctime>
+#include <vector>
+#include <algorithm>
 
 int main() {
-    int numNodes = 20;        // Number of nodes
+    int numNodes = 200;        // Number of nodes
     double saturation = 0.5;  // 50% saturation
-
 
     // Calculate the target number of connections
     int maxConnections = (numNodes * (numNodes - 1)) / 2;
@@ -23,25 +24,42 @@ int main() {
     // Seed random number generator
     std::srand(static_cast<unsigned int>(std::time(0)));
 
-    int connectionsMade = 0;
+    std::vector<std::pair<int, int>> edges; // Store edges as pairs
 
     // Generate random connections until we reach the target
-    while (connectionsMade < targetConnections) {
-        for (int i = 1; i < saturation*numNodes; i ++){
+    while (static_cast<int>(edges.size()) < targetConnections) {
+        for (int i = 1; i <= saturation * numNodes; i++) {
             int nodeA = i;
             int nodeB = 1 + std::rand() % numNodes;
 
-        // Ensure no self-connections and nodeA < nodeB to avoid duplicates
-        if (nodeA != nodeB && nodeA < nodeB) {
-            outputFile << nodeA << " " << nodeB << std::endl;
-            connectionsMade++;
-        }
+            // Ensure no self-connections and nodeA < nodeB to avoid duplicates
+            if (nodeA != nodeB) {
+                if (nodeA > nodeB) std::swap(nodeA, nodeB);
+
+                std::pair<int, int> edge = {nodeA, nodeB};
+
+                // Check if the edge already exists
+                if (std::find(edges.begin(), edges.end(), edge) == edges.end()) {
+                    edges.push_back(edge);
+                }
+
+                if (static_cast<int>(edges.size()) >= targetConnections) {
+                    break;
+                }
+            }
         }
     }
 
+    // Sort edges
+    std::sort(edges.begin(), edges.end());
+
+    // Write sorted edges to the file
+    for (const auto &edge : edges) {
+        outputFile << edge.first << " " << edge.second << std::endl;
+    }
 
     outputFile.close();
-    std::cout << "File with nodes generated" << std::endl;
+    std::cout << "File with sorted edges generated" << std::endl;
 
     return 0;
 }
