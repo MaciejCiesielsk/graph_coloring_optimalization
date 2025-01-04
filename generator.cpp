@@ -26,28 +26,27 @@ int main() {
 
     std::vector<std::pair<int, int>> edges; // Store edges as pairs
 
-    // Generate random connections until we reach the target
-    while (static_cast<int>(edges.size()) < targetConnections) {
-        for (int i = 1; i <= saturation * numNodes; i++) {
-            int nodeA = i;
-            int nodeB = 1 + std::rand() % numNodes;
+    // Use a uniform probability to decide inclusion of each edge
+    for (int nodeA = 1; nodeA <= numNodes; ++nodeA) {
+        for (int nodeB = nodeA + 1; nodeB <= numNodes; ++nodeB) {
+            double probability = static_cast<double>(std::rand()) / RAND_MAX;
 
-            // Ensure no self-connections and nodeA < nodeB to avoid duplicates
-            if (nodeA != nodeB) {
-                if (nodeA > nodeB) std::swap(nodeA, nodeB);
-
-                std::pair<int, int> edge = {nodeA, nodeB};
-
-                // Check if the edge already exists
-                if (std::find(edges.begin(), edges.end(), edge) == edges.end()) {
-                    edges.push_back(edge);
-                }
-
+            if (probability <= saturation) {
+                edges.emplace_back(nodeA, nodeB);
                 if (static_cast<int>(edges.size()) >= targetConnections) {
                     break;
                 }
             }
         }
+        if (static_cast<int>(edges.size()) >= targetConnections) {
+            break;
+        }
+    }
+
+    // Shuffle and truncate edges if oversaturated
+    std::random_shuffle(edges.begin(), edges.end());
+    if (static_cast<int>(edges.size()) > targetConnections) {
+        edges.resize(targetConnections);
     }
 
     // Sort edges
