@@ -128,8 +128,8 @@ int main() {
     chrono::minutes timeout(3); // Set timeout to 3 minutes
 
     vector<int> initial_solution = greedy();
-    int max_iterations = 500;
-    int tabu_list_size = 1000;
+    int max_iterations = 5000;
+    int tabu_list_size = 100;
 
     ifstream file("queen6.txt");
     int node, v1, v2;

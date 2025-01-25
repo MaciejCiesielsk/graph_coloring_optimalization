@@ -1,37 +1,60 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 
+# Funkcja implementująca zachłanne kolorowanie grafu
 def greedy_coloring(graph):
-    # Initialize colors for each node
     colors = {}
     for node in graph.nodes():
-        # Get all neighbor colors
+        # Pobieramy kolory sąsiadów
         neighbor_colors = {colors[neighbor] for neighbor in graph.neighbors(node) if neighbor in colors}
-        # Assign the smallest available color
-        color = 0
-        while color in neighbor_colors:
-            color += 1
-        colors[node] = color
+        
+        # Wybieramy najmniejszy dostępny kolor
+        for color in range(len(graph)):
+            if color not in neighbor_colors:
+                colors[node] = color
+                break
     return colors
 
-# Define the graph
-G = nx.Graph()
-edges = [
-    ('A', 'B'), ('A', 'C'), ('B', 'D'), ('C', 'E'), 
-    ('D', 'F'), ('E', 'F'), ('A', 'D'), ('B', 'E'), ('C', 'F')
-]
-G.add_edges_from(edges)
+# Tworzenie grafu na podstawie zadanych połączeń
+def create_custom_graph():
+    G = nx.Graph()
+    edges = [
+        ('A', 'B'),
+        ('A', 'C'),
+        ('B', 'D'),
+        ('C', 'D'),
+        ('D', 'E'),
+        ('E', 'F'),
+        ('F', 'A')
+    ]
+    G.add_edges_from(edges)
+    return G
 
-# Perform greedy coloring
-node_colors = greedy_coloring(G)
+# Rysowanie grafu z kolorami i legendą
+def draw_colored_graph(graph, colors):
+    # Tworzymy mapowanie kolorów na nazwy
+    color_map = plt.cm.tab10  # Używamy koloru tab10 z Matplotliba
+    
+    # Wyciągamy kolory wierzchołków
+    unique_colors = sorted(set(colors.values()))
+    color_legend = {color: color_map(color / len(unique_colors)) for color in unique_colors}
 
-# Map color numbers to matplotlib colors
-color_map = plt.cm.get_cmap('tab10', max(node_colors.values()) + 1)
-node_color_list = [color_map(node_colors[node]) for node in G.nodes()]
+    # Mapujemy wierzchołki na kolory
+    node_colors = [color_legend[colors[node]] for node in graph.nodes()]
 
-# Draw the graph
-plt.figure(figsize=(8, 6))
-pos = nx.spring_layout(G)  # Positions for nodes
-nx.draw(G, pos, with_labels=True, node_color=node_color_list, edge_color='black', node_size=800, font_size=10, font_weight='bold')
-plt.title("Greedy Coloring of a Graph", fontsize=14)
-plt.show()
+    # Rysujemy graf
+    pos = nx.spring_layout(graph, seed=42)  # Układ sprężynowy dla ładnego rozmieszczenia
+    nx.draw(graph, pos, with_labels=True, node_color=node_colors, edge_color="gray", node_size=500, font_size=10)
+
+    # Dodajemy legendę
+    legend_handles = [plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=color_legend[c], markersize=10, label=f'Kolor {c}')
+                      for c in unique_colors]
+    plt.legend(handles=legend_handles, loc='best', title="Użyte kolory")
+
+    plt.show()
+
+# Główna funkcja
+if __name__ == "__main__":
+    G = create_custom_graph()
+    coloring = greedy_coloring(G)
+    draw_colored_graph(G, coloring)
