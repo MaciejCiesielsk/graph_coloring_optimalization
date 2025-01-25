@@ -10,7 +10,7 @@ using namespace std;
 
 vector<int> greedy() {
     vector<int> solution;
-    ifstream file("data-small.txt");
+    ifstream file("queen6.txt");
     int node, v1, v2;
     srand(time(NULL));
     file >> node;
@@ -84,7 +84,7 @@ vector<int> tabu_search(const vector<int>& initial_solution, const vector<vector
 
     srand(time(NULL));
 
-    for (int i = 0; i < max_iterations; i++) {
+    for (int i = 1; i < max_iterations; i++) {
         // Check if the time limit has been exceeded
         auto now = chrono::steady_clock::now();
         if (now - start_time >= timeout) {
@@ -128,10 +128,10 @@ int main() {
     chrono::minutes timeout(3); // Set timeout to 3 minutes
 
     vector<int> initial_solution = greedy();
-    int max_iterations = 10;
-    int tabu_list_size = 40;
+    int max_iterations = 500;
+    int tabu_list_size = 1000;
 
-    ifstream file("data-small.txt");
+    ifstream file("queen6.txt");
     int node, v1, v2;
     file >> node;
 
